@@ -1,28 +1,41 @@
-import json
 from IPython.display import display, HTML
 
 # Registers
 CLUE_REGISTRY = {}
 SOLUTION_REGISTRY = {}
 
-def load_clues_and_solutions(json_file):
-    """
-    Load clues and solutions from a JSON file.
-    
-    Parameters:
-    - json_file (str): Path to the JSON file containing clues and solutions.
-    """
-    global CLUE_REGISTRY, SOLUTION_REGISTRY
-    with open(json_file, 'r') as file:
-        data = json.load(file)
-        CLUE_REGISTRY.update(data.get("clues", {}))
-        SOLUTION_REGISTRY.update(data.get("solutions", {}))
+# Embed clues and solutions directly
+CLUES_AND_SOLUTIONS = {
+    "clues": {
+        "ClueImportDataset": "Use: !wget -q {your_link}",
+        "ClueDisplayDataset": "Use `pd.read_csv('the_name_of_file.csv')` to load the dataset. Then, use the `.head()` method to display the first few rows.",
+        "ClueIdentifyMissingValues": "Use `len(your_dataset)` to find the number of rows. Then, use the `.isnull().sum()` method to count the missing values for each column.",
+        "ClueRemoveMissingValues": "Apply `.dropna()` to your dataset to remove rows with missing values. Then use the same method with the code above to check if it worked."
+    },
+    "solutions": {
+        "SolutionImportDataset": "!wget -q https://raw.githubusercontent.com/Guillaume-Georges/diabetes-dataset-machine-learning-course/refs/heads/main/diabetes_dataset_missing_values.csv",
+        "SolutionDisplayDataset": "import pandas as pd; dataset = pd.read_csv('diabetes_dataset_missing_values.csv'); dataset.head()",
+        "SolutionIdentifyMissingValues": """total_rows = len(dataset)
+missing_counts = dataset.isnull().sum()
+print(f"Total number of rows in the dataset: {total_rows}")
+print("Missing values per column:")
+print(missing_counts)""",
+        "SolutionRemoveMissingValues": """cleaned_dataset = dataset.dropna();
+print(cleaned_dataset.isnull().sum())""",
+        "SolutionShowDataTypes": "print(cleaned_dataset.dtypes)",
+        "SolutionCountUniqueValues": "print(your_dataset_name[[\"gender\", \"location\", \"smoking_history\"]].nunique())",
+        "SolutionLabelEncoding": """data_encoded = cleaned_dataset.copy()
+data_encoded = pd.get_dummies(data_encoded, columns=['gender', 'smoking_history'])
+label_encoder = LabelEncoder()
+data_encoded['location'] = label_encoder.fit_transform(data_encoded['location'])
+data_encoded['race:Hispanic'] = data_encoded['race:Hispanic'].round().astype(int)
+data_encoded.head()"""
+    }
+}
 
-def setup_clue(clue_id, clue):
-    CLUE_REGISTRY[clue_id] = clue
-
-def setup_solution(solution_id, solution):
-    SOLUTION_REGISTRY[solution_id] = solution
+# Initialize the CLUE_REGISTRY and SOLUTION_REGISTRY with the embedded data
+CLUE_REGISTRY.update(CLUES_AND_SOLUTIONS["clues"])
+SOLUTION_REGISTRY.update(CLUES_AND_SOLUTIONS["solutions"])
 
 def show_clue(clue_id):
     if clue_id not in CLUE_REGISTRY:
