@@ -1,0 +1,18 @@
+{
+    "clues": {
+      "ClueImportDataset": "Use: !wget -q {your_link}",
+      "ClueDisplayDataset": "Use `pd.read_csv('the_name_of_file.csv')` to load the dataset. Then, use the `.head()` method to display the first few rows.",
+      "ClueIdentifyMissingValues": "Use `len(your_dataset)` to find the number of rows. Then, use the `.isnull().sum()` method to count the missing values for each column.",
+      "ClueRemoveMissingValues": "Apply `.dropna()` to your dataset to remove rows with missing values. Then use the same method with the code above to check if it worked."
+    },
+    "solutions": {
+      "SolutionImportDataset": "!wget -q https://raw.githubusercontent.com/Guillaume-Georges/diabetes-dataset-machine-learning-course/refs/heads/main/diabetes_dataset_missing_values.csv",
+      "SolutionDisplayDataset": "import pandas as pd; dataset = pd.read_csv('diabetes_dataset_missing_values.csv'); dataset.head()",
+      "SolutionIdentifyMissingValues": "total_rows = len(dataset)\nmissing_counts = dataset.isnull().sum()\nprint(f\"Total number of rows in the dataset: {total_rows}\")\nprint(\"Missing values per column:\")\nprint(missing_counts)",
+      "SolutionRemoveMissingValues": "cleaned_dataset = dataset.dropna();\nprint(cleaned_dataset.isnull().sum())",
+      "SolutionShowDataTypes": "print(cleaned_dataset.dtypes)",
+      "SolutionCountUniqueValues": "print(your_dataset_name[[\"gender\", \"location\", \"smoking_history\"]].nunique())",
+      "SolutionLabelEncoding": "data_encoded = cleaned_dataset.copy()\ndata_encoded = pd.get_dummies(data_encoded, columns=['gender', 'smoking_history'])\nlabel_encoder = LabelEncoder()\ndata_encoded['location'] = label_encoder.fit_transform(data_encoded['location'])\ndata_encoded['race:Hispanic'] = data_encoded['race:Hispanic'].round().astype(int)\ndata_encoded.head()"
+    }
+  }
+  

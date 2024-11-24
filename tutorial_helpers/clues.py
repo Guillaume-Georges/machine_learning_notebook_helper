@@ -1,8 +1,22 @@
-# clues.py
+import json
+from IPython.display import display, HTML
+
+# Registers
 CLUE_REGISTRY = {}
 SOLUTION_REGISTRY = {}
 
-from IPython.display import HTML, display
+def load_clues_and_solutions(json_file):
+    """
+    Load clues and solutions from a JSON file.
+    
+    Parameters:
+    - json_file (str): Path to the JSON file containing clues and solutions.
+    """
+    global CLUE_REGISTRY, SOLUTION_REGISTRY
+    with open(json_file, 'r') as file:
+        data = json.load(file)
+        CLUE_REGISTRY.update(data.get("clues", {}))
+        SOLUTION_REGISTRY.update(data.get("solutions", {}))
 
 def setup_clue(clue_id, clue):
     CLUE_REGISTRY[clue_id] = clue
